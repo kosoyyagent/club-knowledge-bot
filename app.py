@@ -129,6 +129,13 @@ def _bot_id():
 def index():
     return 'club-knowledge-bot alive'
 
+@app.route('/selftest')
+def selftest():
+    a = llm_answer('Когда проходят эфиры клуба?')
+    me = tg('getMe')
+    return jsonify(llm=a, bot=me.get('result', {}).get('username'),
+                   key_set=bool(OPENAI_API_KEY))
+
 @app.route('/tg/' + SECRET, methods=['POST'])
 def webhook():
     upd = request.get_json(force=True, silent=True) or {}
